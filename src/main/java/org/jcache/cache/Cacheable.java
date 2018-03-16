@@ -1,6 +1,6 @@
 package org.jcache.cache;
 
-public interface Cacheable {
+interface Cacheable {
 
 	public boolean isExpired();
 	
