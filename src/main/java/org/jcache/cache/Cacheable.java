@@ -1,8 +1,10 @@
 package org.jcache.cache;
 
-interface Cacheable {
+import org.jcache.cache.purge.PurgeStrategy;
 
-	public boolean isExpired();
+public interface Cacheable {
 	
 	public Object getIdentifier();
+
+	public PurgeStrategy getPurgeStrategy();
 }

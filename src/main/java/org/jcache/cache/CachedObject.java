@@ -1,7 +1,12 @@
 package org.jcache.cache;
 
-public class CachedObject implements Cacheable{
+import org.jcache.cache.purge.PurgeStrategy;
 
+public class CachedObject implements Cacheable, PurgeStrategy{
+
+	public CachedObject(Object obj, Object identifier, PurgeStrategy purgeStrategy){
+
+    }
 	public boolean isExpired() {
 		// TODO Auto-generated method stub
 		return false;
@@ -12,4 +17,7 @@ public class CachedObject implements Cacheable{
 		return null;
 	}
 
+    public PurgeStrategy getPurgeStrategy() {
+        return null;
+    }
 }
