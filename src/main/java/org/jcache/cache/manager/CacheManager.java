@@ -3,12 +3,12 @@ package org.jcache.cache.manager;
 import org.jcache.cache.Cacheable;
 import org.jcache.cache.purge.PurgeDaemon;
 
-class CacheManager {
+public class CacheManager {
     /* This is the HashMap that contains all objects in the cache. */
     private static java.util.HashMap cacheHashMap = new java.util.HashMap();
-    /* This object acts as a semaphore, which protects the HashMap */
+
     /* RESERVED FOR FUTURE USE  private static Object lock = new Object(); */
-    static
+    /*static
     {
         try
         {
@@ -23,7 +23,7 @@ class CacheManager {
         {
             System.out.println("CacheManager.Static Block: " + e);
         }
-    } /* End static block */
+    }*/ /* End static block */
     public CacheManager()
     {
     }
@@ -40,7 +40,8 @@ class CacheManager {
         Cacheable object = (Cacheable)cacheHashMap.get(identifier);
         // The code to create the object would be placed here.
         //}                    // UNCOMMENT LINE XXX
-        if (object == null)
+
+        /*if (object == null)
             return null;
         if (object.getPurgeStrategy().isExpired())
         {
@@ -50,6 +51,7 @@ class CacheManager {
         else
         {
             return object;
-        }
+        }*/
+        return object;
     }
 }

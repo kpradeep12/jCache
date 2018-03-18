@@ -6,5 +6,4 @@ public interface Cacheable {
 	
 	public Object getIdentifier();
 
-	public PurgeStrategy getPurgeStrategy();
 }

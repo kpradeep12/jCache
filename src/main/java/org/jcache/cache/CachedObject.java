@@ -2,22 +2,20 @@ package org.jcache.cache;
 
 import org.jcache.cache.purge.PurgeStrategy;
 
-public class CachedObject implements Cacheable, PurgeStrategy{
+public class CachedObject implements Cacheable{
 
-	public CachedObject(Object obj, Object identifier, PurgeStrategy purgeStrategy){
-
+	Object object;
+	Object identifier;
+	public CachedObject(Object object, Object identifier){
+        this.object = object;
+        this.identifier = identifier;
     }
-	public boolean isExpired() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	public Object getIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
+		return identifier;
 	}
 
-    public PurgeStrategy getPurgeStrategy() {
-        return null;
+    public Object getObject() {
+        return object;
     }
 }

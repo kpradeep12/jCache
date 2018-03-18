@@ -4,6 +4,7 @@ import java.util.HashMap;
 import org.jcache.cache.Cacheable;
 /* Create background thread, which will be responsible for
 purging expired items. */
+/* This object acts as a semaphore, which protects the HashMap */
 public class PurgeDaemon extends Thread{
     /*  The default time the thread should sleep between scans.
                             The sleep method takes in a millisecond value so 5000 = 5
@@ -41,12 +42,11 @@ key in case it needs to be removed */
 inside the cache */
                     Cacheable value = (Cacheable)cacheHashMap.get(key);
                     /* Is the cacheable object expired? */
-                    if (value.getPurgeStrategy().isExpired())
+                    /*if (value.getPurgeStrategy().isExpired())
                     {
-                        /* Yes it's expired! Remove it from the cache */
                         cacheHashMap.remove(key);
                         System.out.println("ThreadCleanerUpper Running. Found an Expired Object in the Cache.");
-                    }
+                    }*/
                 }
                 /*
                  ************************************************************************
