@@ -12,7 +12,8 @@ This library depends on three main entry points, they are:
 Sample code below shows example to use jCache  
 //Create Cached wrapper object.   
 CachedObject co1 = new CachedObject(1, 1);  
-//Store co1 in cache.  
-CacheManager.putCache(co1);  
-//Retrive from cache.  
-System.out.println(CacheManager.getCache(1));  
+//Create CacheManager by passing purge strategy (LFU is Least frequently used)
+CacheManager cm = CacheManager.getInstance(PurgeStrategyType.LFU);
+//Store and retrieve
+cm.putCache(co1);
+System.out.println(cm.getCache(1));
