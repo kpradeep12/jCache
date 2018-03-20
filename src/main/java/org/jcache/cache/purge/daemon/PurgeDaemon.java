@@ -1,4 +1,4 @@
-package org.jcache.cache.purge;
+package org.jcache.cache.purge.daemon;
 
 import java.util.HashMap;
 import org.jcache.cache.Cacheable;
