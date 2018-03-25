@@ -3,7 +3,6 @@ package org.jcache.cache.manager;
 import org.jcache.cache.Cacheable;
 import org.jcache.cache.purge.PurgeStrategy;
 import org.jcache.cache.purge.PurgeStrategyType;
-import sun.security.util.Cache;
 
 public class CacheManager {
     /* This is the HashMap that contains all objects in the cache. */
