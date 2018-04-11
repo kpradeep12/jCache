@@ -1,7 +1,13 @@
 package org.jcache.cache.purge.daemon;
 
 import java.util.HashMap;
+import java.util.Map;
+
 import org.jcache.cache.Cacheable;
+import org.jcache.cache.CachedObject;
+import org.jcache.cache.purge.PurgeStrategy;
+import org.jcache.cache.store.Store;
+
 /* Create background thread, which will be responsible for
 purging expired items. */
 /* This object acts as a semaphore, which protects the HashMap */
@@ -11,10 +17,12 @@ public class PurgeDaemon extends Thread{
           Seconds.
                         */
     static int milliSecondSleepTime = 5000;
-    private static java.util.HashMap cacheHashMap;
+    private Map<String, Store> cacheHashMap;
+    private PurgeStrategy purgeStrategy;
 
-    public PurgeDaemon(HashMap cacheHashMap){
+    public PurgeDaemon(Map cacheHashMap, PurgeStrategy purgeStrategy){
         this.cacheHashMap = cacheHashMap;
+        this.purgeStrategy = purgeStrategy;
     }
 
     public void run()
@@ -40,9 +48,9 @@ key in case it needs to be removed */
                     Object key = keys.next();
                       /* Get the cacheable object associated with the key
 inside the cache */
-                    Cacheable value = (Cacheable)cacheHashMap.get(key);
+                    //CachedObject value = (CachedObject) cacheHashMap.get(key);
                     /* Is the cacheable object expired? */
-                    /*if (value.getPurgeStrategy().isExpired())
+                    /*if (this.purgeStrategy.isExpired(value))
                     {
                         cacheHashMap.remove(key);
                         System.out.println("ThreadCleanerUpper Running. Found an Expired Object in the Cache.");

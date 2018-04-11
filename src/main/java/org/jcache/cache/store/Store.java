@@ -1,29 +1,17 @@
 package org.jcache.cache.store;
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import org.jcache.cache.CachedObject;
+
+import java.util.Map;
 
 public class Store {
-    // hash map contains all objects in the cache.
-    private java.util.HashMap cacheHashMap = new java.util.HashMap();
-    // queue contains keys based on the priority
-    private java.util.PriorityQueue queue = new PriorityQueue();
+    private Map cacheHashMap = new java.util.HashMap();
 
-    public Store(Comparator comparator){
-        this.queue = new PriorityQueue(comparator);
+    public void put(Object identifier, CachedObject co){
+        this.cacheHashMap.put(identifier, co);
     }
 
-    public void insert(Object key, Object value){
-        cacheHashMap.put(key, value);
-        queue.offer(key);
-    }
-
-    public Object get(Object key){
-        return cacheHashMap.get(key);
-    }
-
-    public void remove(Object key){
-        cacheHashMap.remove(key);
-        queue.remove(key);
+    public CachedObject get(Object identifier){
+        return (CachedObject) this.cacheHashMap.get(identifier);
     }
 }
