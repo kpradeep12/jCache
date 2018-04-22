@@ -1,16 +1,20 @@
 package org.jcache.cache.manager;
 
 import org.jcache.cache.Cacheable;
+import org.jcache.cache.purge.ExpirationPolicy;
 import org.jcache.cache.purge.PurgeStrategy;
 import org.jcache.cache.purge.PurgeStrategyType;
 import org.jcache.cache.purge.daemon.PurgeDaemon;
 import org.jcache.cache.store.Store;
 
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class CacheManager {
     /* This is the HashMap that contains all objects in the cache. */
-    private static Map<String, Store> cacheHashMap = new java.util.HashMap<>();
+    private static Map<String, Store> cacheHashMap = new java.util.HashMap<String, Store>();
     private static PurgeStrategy purgeStrategy;
     private static CacheManager cacheManager;
     /* RESERVED FOR FUTURE USE  private static Object lock = new Object(); */
@@ -35,12 +39,12 @@ public class CacheManager {
         this.purgeStrategy = purgeStrategy;
         try
         {
-
-            Thread threadCleanerUpper = new PurgeDaemon(cacheHashMap, purgeStrategy);
+        	ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        	
+            Thread threadCleanerUpper = new PurgeDaemon(cacheHashMap);
             // Sets the thread's priority to the minimum value.
-            threadCleanerUpper.setPriority(Thread.MIN_PRIORITY);
-            // Starts the thread.
-            //threadCleanerUpper.start();
+            //threadCleanerUpper.setPriority(Thread.MIN_PRIORITY);
+            executor.scheduleWithFixedDelay(threadCleanerUpper, 30, 30, TimeUnit.SECONDS);
         }
         catch(Exception e)
         {
@@ -58,8 +62,16 @@ public class CacheManager {
         return cacheManager;
     }
 
-    public Store createStore(String name){
-        CacheManager.cacheHashMap.put(name, new Store());
+    public Store createStore(String name,ExpirationPolicy policy){
+    	if(cacheManager.cacheHashMap != null){
+            synchronized (Store.class) {
+            	if(CacheManager.cacheHashMap.get(name) == null) {
+            		PurgeStrategy strategy = policy.getStrategyType().createPurgeStrategy();
+            	    strategy.setExpirationTimeInHours(policy.getExpirationTimeInHours());
+            		CacheManager.cacheHashMap.put(name, new Store(strategy));
+            	}	
+            }
+    	}    	
         return CacheManager.cacheHashMap.get(name);
     }
 

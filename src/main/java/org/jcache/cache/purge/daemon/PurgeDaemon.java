@@ -1,7 +1,9 @@
 package org.jcache.cache.purge.daemon;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.jcache.cache.Cacheable;
 import org.jcache.cache.CachedObject;
@@ -20,9 +22,9 @@ public class PurgeDaemon extends Thread{
     private Map<String, Store> cacheHashMap;
     private PurgeStrategy purgeStrategy;
 
-    public PurgeDaemon(Map cacheHashMap, PurgeStrategy purgeStrategy){
+    public PurgeDaemon(Map cacheHashMap){
         this.cacheHashMap = cacheHashMap;
-        this.purgeStrategy = purgeStrategy;
+        //this.purgeStrategy = purgeStrategy;
     }
 
     public void run()
@@ -31,8 +33,8 @@ public class PurgeDaemon extends Thread{
         {
                   /* Sets up an infinite loop.  The thread will continue
 looping forever. */
-            while (true)
-            {
+           // while (true)
+            //{
                 System.out.println("ThreadCleanerUpper Scanning For Expired Objects...");
                     /* Get the set of all keys that are in cache.  These are
 the unique identifiers */
@@ -55,6 +57,16 @@ inside the cache */
                         cacheHashMap.remove(key);
                         System.out.println("ThreadCleanerUpper Running. Found an Expired Object in the Cache.");
                     }*/
+                    Store store =(Store)cacheHashMap.get(key);
+                    Map<String, CachedObject> sm = store.getStoreMap();
+                    Set keySet1 = sm.keySet();
+                    Iterator keys1 = keySet1.iterator();
+                    while(keys1.hasNext()) {
+                    	String sk =(String) keys1.next();
+                    	CachedObject co = sm.get(sk);
+                    	store.getStrategy().isExpired(co);
+                    	System.out.println("LOOPING STORE");
+                    }
                 }
                 /*
                  ************************************************************************
@@ -65,8 +77,9 @@ inside the cache */
                  */
                     /* Puts the thread to sleep.  Don't need to check it
 continuously */
-                Thread.sleep(this.milliSecondSleepTime);
-            }
+              //  Thread.sleep(this.milliSecondSleepTime);
+                
+          //  }
         }
         catch (Exception e)
         {
